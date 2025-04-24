@@ -4,8 +4,8 @@
 
 A Retrieval-Augmented Generation (RAG) application that allows users to upload PDF documents and interactively ask questions about their content. The system leverages Llama Index for the RAG pipeline, VoyageAI for high-performance embeddings and reranking, Anthropic's Claude model for generation, FAISS for efficient vector storage, and Streamlit for the user interface.
 
-<!-- Optional: Add a screenshot or GIF of the application in action -->
-<!-- ![App Screenshot](link_to_your_screenshot.png) -->
+![image](https://github.com/user-attachments/assets/033a748e-f5d5-4ee2-ad44-9e8bec8a6dd4)
+
 
 ## Key Features
 
@@ -148,6 +148,9 @@ Follow these steps to set up the project locally:
 The project follows a modular structure:
 Junior_ML_Engineer/
 ├── assets/ # Image assets for the UI
+│ ├── logo_temelion.png
+│ ├── ai_building_hand.png
+│ └── ai_building_large.png
 ├── cache/ # (Gitignored) Cached parsed PDF data (*.pkl)
 ├── faiss_index_cache/ # (Gitignored) Cached FAISS index files
 ├── uploaded_pdfs/ # (Gitignored) Temporary storage for uploaded PDFs
