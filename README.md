@@ -4,9 +4,8 @@
 
 A Retrieval-Augmented Generation (RAG) application that allows users to upload PDF documents and interactively ask questions about their content. The system leverages Llama Index for the RAG pipeline, VoyageAI for high-performance embeddings and reranking, Anthropic's Claude model for generation, FAISS for efficient vector storage, and Streamlit for the user interface.
 
-![image](https://github.com/user-attachments/assets/96a1c0d2-2888-407b-9521-788c305487a0)
-
-
+<!-- Optional: Add a screenshot or GIF of the application in action -->
+<!-- ![App Screenshot](link_to_your_screenshot.png) -->
 
 ## Key Features
 
@@ -27,7 +26,8 @@ A Retrieval-Augmented Generation (RAG) application that allows users to upload P
     *   Display of source nodes used for generating answers.
     *   Performance metrics (parsing time, indexing time, etc.).
 *   **Efficient Caching:** Caches parsed document elements and FAISS indices locally to significantly speed up processing for previously uploaded documents.
-*   **Secure Configuration:** API keys are loaded from environment variables, avoiding hardcoding sensitive information.
+*   **Secure Configuration:** API keys are loaded from environment variables (via `config.py`), avoiding hardcoding sensitive information.
+*   **Modular Codebase:** Application logic is split into dedicated modules for better organisation and maintainability. <!-- MODIFIED -->
 
 ## Technologies Used
 
@@ -78,11 +78,11 @@ Follow these steps to set up the project locally:
     This command uses the provided `environment.yml` file to install all necessary Python packages with the correct versions.
     ```bash
     conda env create -f environment.yml
-    conda activate temelion # Check the 'name:' field in environment.yml for the exact environment name
+    conda activate temelion-rag-env # Check the 'name:' field in environment.yml for the exact environment name
     ```
 
 3.  **Configure API Keys (CRITICAL & SECURELY):**
-    This application requires API keys for Voyage AI and Anthropic. **Do NOT hardcode these keys in the script.** The script (`app.py`) reads them from environment variables. You must set these variables in your system:
+    This application requires API keys for Voyage AI and Anthropic. **Do NOT hardcode these keys.** The script (`config.py`) reads them from environment variables. You must set these variables in your system: <!-- MODIFIED -->
 
     *   `VOYAGE_API_KEY`: Your API key from Voyage AI.
     *   `ANTHROPIC_API_KEY`: Your API key from Anthropic.
@@ -106,78 +106,85 @@ Follow these steps to set up the project locally:
             $env:ANTHROPIC_API_KEY="your_anthropic_key_here"
             ```
     *   **Persistent (Recommended for local development):** Add the `export` (Linux/macOS) or `set` / `$env:` (Windows) commands to your shell's profile script (e.g., `.bashrc`, `.zshrc`, `.profile`, or via System Environment Variables settings on Windows).
-    *   **Using a `.env` file (Alternative - Requires code modification):** If you prefer using a `.env` file, you would need to:
-        1.  Install `python-dotenv` (`pip install python-dotenv` and add it to `environment.yml`).
-        2.  Create a `.env` file in the project root (add it to `.gitignore`!).
-        3.  Add `from dotenv import load_dotenv` and `load_dotenv()` near the start of `app.py`.
-        *(Note: The current script does not implement this method out-of-the-box.)*
+    *   **Using a `.env` file (Alternative):** You could modify `config.py` to use `python-dotenv` (requires installing it and adding `load_dotenv()` in `config.py`). Create a `.env` file (add to `.gitignore`!) with the keys.
 
 ## Usage
 
 1.  **Activate the Conda Environment:**
     ```bash
-    conda activate temelion # Or your environment name
+    conda activate temelion-rag-env # Or your environment name
     ```
 
-2.  **Run the Streamlit Application:**
+2.  **Run the Streamlit Application:** <!-- MODIFIED -->
+    The application entry point is now `main.py`.
     ```bash
-    streamlit run app.py
+    streamlit run main.py
     ```
     *   *(Optional)* To potentially suppress harmless PyTorch warnings related to Streamlit's hot-reloading, you can run:
         ```bash
-        STREAMLIT_RUN_ON_SAVE=false streamlit run app.py
+        STREAMLIT_RUN_ON_SAVE=false streamlit run main.py
         ```
 
 3.  **Interact with the Application:**
     *   The application will open in your web browser.
     *   Use the sidebar to **Upload a PDF document**.
-    *   Click the **"Process Document (Parse & Index)"** button. Wait for the status indicators (Parsed, Indexed, Query Engine Ready) to show success (✅). This may take some time for the first processing of a document, especially embedding generation.
+    *   Click the **"Démarrez"** (Start) button. Wait for the status indicators (Parsed, Indexed, Query Engine Ready) to show success (✅). This may take some time for the first processing of a document, especially embedding generation.
     *   Once the Query Engine is ready, use the **chat input area** at the bottom to ask questions about the document's content.
-    *   View the generated answers and expand the **"Show Sources Used"** section to see the relevant text chunks retrieved from the document.
+    *   View the generated answers and expand the **"View Sources"** section to see the relevant text chunks retrieved from the document.
     *   Adjust the **"Nodes Retrieved (K)"** and **"Nodes Reranked (N)"** sliders in the sidebar to tune retrieval behaviour (changes apply on the next query).
-    *   Use **"Force Re-Parse & Re-Index"** to clear caches and reprocess the current document from scratch.
-    *   Use **"Clear Chat History"** to reset the conversation.
-    *   Use **"Reset Entire System"** to clear everything and start fresh with a new document upload.
+    *   Use **"🔄 Nettoyer les caches"** (Clear Caches) to clear caches and reprocess the current document from scratch.
+    *   Use **"🔄 Nettoyer la discussion"** (Clear Discussion) to reset the conversation.
+    *   Use **"❌ Réinitialiser le système"** (Reset System) to clear everything and start fresh with a new document upload.
 
 ## Configuration
 
-*   **API Keys:** Must be configured via environment variables (`VOYAGE_API_KEY`, `ANTHROPIC_API_KEY`) as described in the Installation section. The application will fail to start if these are missing.
-*   **Models:** Embedding, reranking, and LLM models are currently defined as constants within `app.py` (e.g., `VOYAGE_EMBEDDING_MODEL`, `ANTHROPIC_LLM_MODEL`).
-*   **Retrieval Parameters:** `K` (similarity_top_k) and `N` (rerank_top_n) can be adjusted dynamically via sliders in the Streamlit UI sidebar.
-*   **File Paths:** Directories for uploads (`uploaded_pdfs/`), parsing cache (`cache/`), and FAISS index cache (`faiss_index_cache/`) are defined in `app.py` and created automatically. These directories are gitignored.
+*   **API Keys:** Must be configured via environment variables (`VOYAGE_API_KEY`, `ANTHROPIC_API_KEY`) and are loaded in `config.py`. <!-- MODIFIED -->
+*   **Models & Parameters:** Settings like model names, embedding dimensions, parsing thresholds, etc., are centralised in `config.py`. <!-- MODIFIED -->
+*   **Retrieval Parameters:** `K` (similarity_top_k) and `N` (rerank_top_n) can be adjusted dynamically via sliders in the Streamlit UI sidebar (defined in `ui.py`). <!-- MODIFIED -->
+*   **File Paths:** Directories for uploads (`uploaded_pdfs/`), parsing cache (`cache/`), and FAISS index cache (`faiss_index_cache/`) are defined in `config.py` and created automatically if they don't exist. These directories are gitignored.
 
-## Project Structure
+## Project Structure <!-- MODIFIED -->
+
+The project follows a modular structure:
 Junior_ML_Engineer/
-├── assets/ # UI images (logos, icons)
-│ ├── logo_temelion.png
-│ ├── ai_building_hand.png
-│ └── ai_building_large.png
-├── cache/ # (Gitignored) Stores cached parsed PDF elements (*.pkl)
-├── faiss_index_cache/ # (Gitignored) Stores persisted FAISS index files
+├── assets/ # Image assets for the UI
+├── cache/ # (Gitignored) Cached parsed PDF data (*.pkl)
+├── faiss_index_cache/ # (Gitignored) Cached FAISS index files
 ├── uploaded_pdfs/ # (Gitignored) Temporary storage for uploaded PDFs
+│
+├── config.py # Central configuration (API keys, models, paths, thresholds)
+├── pdf_parser.py # PDF parsing logic (PyMuPDF, Camelot, Tesseract)
+├── cache_utils.py # Functions for saving/loading parsed data cache
+├── indexing.py # Node creation, embedding, FAISS index build/load logic
+├── query_engine.py # Setup for the LlamaIndex RetrieverQueryEngine
+├── ui.py # Streamlit UI components and layout functions
+├── main.py # Main application entry point, orchestrates modules and state
+│
 ├── .gitignore # Specifies intentionally untracked files by Git
-├── app.py # The main Streamlit application script
 ├── environment.yml # Conda environment definition with dependencies
 ├── LICENSE # Project licence file
 ├── README.md # This documentation file
-└── .env # (Gitignored - if you choose this method) API keys
+└── .env # (Gitignored - if using this method) API keys
 
 
 ## Caching Behaviour
 
-To improve performance, the application implements caching:
+## Caching Behaviour
 
-*   **Parsed Elements:** When a PDF is successfully parsed, its extracted elements (text blocks, tables, OCR results) are saved as a `.pkl` file in the `cache/` directory. If the same PDF is uploaded again, these cached elements are loaded instead of re-parsing.
-*   **FAISS Index:** After generating embeddings and building the FAISS index for a document, the index is persisted to a subdirectory within `faiss_index_cache/`. If the same document is processed again, the pre-built index is loaded, skipping the potentially time-consuming embedding generation step.
+To improve performance, the application implements caching using functions in `cache_utils.py`: <!-- MODIFIED -->
 
-The **"Force Re-Parse & Re-Index"** button in the sidebar allows you to manually bypass and delete the cache and index for the currently loaded document.
+*   **Parsed Elements:** When a PDF is successfully parsed (`pdf_parser.py`), its extracted elements are saved as a `.pkl` file in the `cache/` directory (path generated by `cache_utils.get_cache_path`). If the same PDF is uploaded again, these cached elements are loaded (`cache_utils.load_parsed_elements`) instead of re-parsing.
+*   **FAISS Index:** After generating embeddings and building the FAISS index (`indexing.py`), the index is persisted to a subdirectory within `faiss_index_cache/`. If the same document is processed again, the pre-built index is loaded (`indexing.load_faiss_index`), skipping the potentially time-consuming embedding generation step.
+
+The **"🔄 Nettoyer les caches"** button in the sidebar allows you to manually bypass and delete the cache and index for the currently loaded document.
 
 ## Troubleshooting
 
 *   **TesseractNotFoundError:** Ensure Tesseract OCR is correctly installed AND its installation directory (containing the `tesseract` executable) is included in your system's PATH environment variable.
 *   **Ghostscript Errors / Camelot Failures:** Table extraction might fail if Ghostscript is missing or not found. Ensure it is installed and accessible. Check Camelot documentation for specific dependency issues.
-*   **API Key Errors:** Double-check that you have correctly set the `VOYAGE_API_KEY` and `ANTHROPIC_API_KEY` environment variables and that they are accessible to the running script. Restart your terminal or IDE after setting persistent variables.
+*   **API Key Errors:** Double-check that you have correctly set the `VOYAGE_API_KEY` and `ANTHROPIC_API_KEY` environment variables and that they are accessible to the running script (`main.py` which imports `config.py`). Restart your terminal or IDE after setting persistent variables. <!-- MODIFIED -->
 *   **FAISS Errors:** Ensure you have the correct FAISS package installed (`faiss-cpu` or `faiss-gpu`) as listed in `environment.yml`. GPU usage requires compatible Nvidia drivers and CUDA toolkit installed, although the script falls back to CPU if GPU fails.
+*   **Import Errors:** If you get errors like `ModuleNotFoundError`, ensure your Conda environment (`temelion-rag-env`) is activated and that all dependencies from `environment.yml` were installed correctly. Also, check that you are running `streamlit run main.py` from the root directory (`Junior_ML_Engineer/`). <!-- NEW SECTION -->
 
 ## Licence
 
