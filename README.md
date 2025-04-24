@@ -6,6 +6,9 @@ A Retrieval-Augmented Generation (RAG) application that allows users to upload P
 
 ![image](https://github.com/user-attachments/assets/033a748e-f5d5-4ee2-ad44-9e8bec8a6dd4)
 
+![image](https://github.com/user-attachments/assets/1f6c89e5-b613-44a6-bfed-6c3302f65a82)
+
+
 
 ## Key Features
 
@@ -147,25 +150,30 @@ Follow these steps to set up the project locally:
 
 The project follows a modular structure:
 
+```text
 Junior_ML_Engineer/
-
-Junior_ML_Engineer/
-├── assets/                                         # UI images (logos, icons)
-│ ├── logo_temelion.png
-│ ├── ai_building_hand.png
-│ └── ai_building_large.png
-├── cache/                                          # (Gitignored) Stores cached parsed PDF elements (*.pkl)
-├── faiss_index_cache/                              # (Gitignored) Stores persisted FAISS index files
-├── uploaded_pdfs/                                  # (Gitignored) Temporary storage for uploaded PDFs
-├── .gitignore                                      # Specifies intentionally untracked files by Git
-├── app.py                                          # The main Streamlit application script
-├── environment.yml                                 # Conda environment definition with dependencies
-├── LICENSE                                         # Project licence file
-├── README.md                                       # This documentation file
-└── .env                                            # (Gitignored - if you choose this method) API keys
-
-
-## Caching Behaviour
+├── assets/                  # UI images (logos, icons)
+│   ├── logo_temelion.png
+│   ├── ai_building_hand.png
+│   └── ai_building_large.png
+├── cache/                   # (Gitignored) Cached parsed PDF data (*.pkl)
+├── faiss_index_cache/       # (Gitignored) Cached FAISS index files
+├── uploaded_pdfs/           # (Gitignored) Temporary storage for uploaded PDFs
+│
+├── config.py                # Central configuration (API keys, models, paths, thresholds)
+├── pdf_parser.py            # PDF parsing logic (PyMuPDF, Camelot, Tesseract)
+├── cache_utils.py           # Functions for saving/loading parsed data cache
+├── indexing.py              # Node creation, embedding, FAISS index build/load logic
+├── query_engine.py          # Setup for the LlamaIndex RetrieverQueryEngine
+├── ui.py                    # Streamlit UI components and layout functions
+├── main.py                  # Main application entry point, orchestrates modules and state
+│
+├── .gitignore               # Specifies intentionally untracked files by Git
+├── environment.yml          # Conda environment definition with dependencies
+├── LICENSE                  # Project licence file (Consider adding one!)
+├── README.md                # This documentation file
+└── .env                     # (Gitignored - if using this method) API keys
+```
 
 ## Caching Behaviour
 
