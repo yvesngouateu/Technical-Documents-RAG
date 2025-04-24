@@ -1,71 +1,52 @@
-# --- Conda/Python Environments ---
-env/
-venv/
-.venv/
-/anaconda3/
-/miniconda3/
-*.conda
-
-#Poppler folder for PDF processing
-poppler-24.07.0/
-
-# --- Python bytecode and caches ---
+# --- Python / Conda ---
 __pycache__/
 *.py[cod]
 *$py.class
+*.so
+*.dylib
+env/
+venv/
+.venv/
+*.conda
+conda-meta/
+pkgs/
 
-# --- IDE specific files ---
+# --- IDE / Editor ---
 .vscode/
 .idea/
 
-# --- OS specific files ---
+# --- OS Specific ---
 .DS_Store
 Thumbs.db
 
-# --- Streamlit specific ---
-.streamlit/
-# IMPORTANT: Add secrets.toml if using Streamlit secrets!
-.streamlit/secrets.toml
+# --- Project Specific Dependencies / Large Files ---
+# CRITICAL: Ignore dependency folders like Poppler
+poppler-24.07.0/
 
-# --- Project Specific Files ---
-# Uploaded PDFs (as defined in UPLOAD_DIR)
-uploaded_pdfs/
-*.pdf # Maybe too broad? Use the directory if possible.
-
-# Parsed data cache (as defined in CACHE_DIR)
+# --- Caches and Uploads ---
 cache/
-*_parsed_cache.pkl
-
-# FAISS Index cache (as defined in FAISS_INDEX_DIR)
 faiss_index_cache/
-vector_store.faiss
+uploaded_pdfs/
+*.pkl
+*.faiss
 docstore.json
 index_store.json
 graph_store.json
-*.faiss # General pattern for FAISS files
 
-# --- Secrets & Sensitive Configs ---
-# IMPORTANT: Add .env if using python-dotenv!
+# --- Secrets ---
+# IMPORTANT: Never commit secrets!
 .env
 *.env
-secrets.yaml
-# config.ini # If it contains secrets
+.streamlit/secrets.toml # If using Streamlit secrets
 
-# --- Log files ---
+# --- Logs ---
 *.log
 
-# --- Dependencies (should be in environment.yml) ---
-# These might appear if packages are installed locally by mistake
-lib/
-include/
-bin/
-Scripts/ # Windows specific
-
-# --- Jupyter Notebook Checkpoints ---
+# --- Notebook Checkpoints ---
 .ipynb_checkpoints/
 
-# --- Asset files (if they are very large, otherwise keep them) ---
-# assets/ # Uncomment if your logos/images are huge and users should download them separately
-
-# --- Ghostscript/Tesseract temp files (if any created) ---
-# Add patterns if you notice specific temp files being created
+# --- Build Artifacts / Distribution ---
+build/
+dist/
+*.egg-info/
+wheels/
