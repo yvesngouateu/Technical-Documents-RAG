@@ -149,27 +149,20 @@ The project follows a modular structure:
 
 Junior_ML_Engineer/
 
-├── assets/ # Image assets for the UI
+Junior_ML_Engineer/
+├── assets/                                         # UI images (logos, icons)
 │ ├── logo_temelion.png
 │ ├── ai_building_hand.png
 │ └── ai_building_large.png
-├── cache/ # (Gitignored) Cached parsed PDF data (*.pkl)
-├── faiss_index_cache/ # (Gitignored) Cached FAISS index files
-├── uploaded_pdfs/ # (Gitignored) Temporary storage for uploaded PDFs
-│
-├── config.py # Central configuration (API keys, models, paths, thresholds)
-├── pdf_parser.py # PDF parsing logic (PyMuPDF, Camelot, Tesseract)
-├── cache_utils.py # Functions for saving/loading parsed data cache
-├── indexing.py # Node creation, embedding, FAISS index build/load logic
-├── query_engine.py # Setup for the LlamaIndex RetrieverQueryEngine
-├── ui.py # Streamlit UI components and layout functions
-├── main.py # Main application entry point, orchestrates modules and state
-│
-├── .gitignore # Specifies intentionally untracked files by Git
-├── environment.yml # Conda environment definition with dependencies
-├── LICENSE # Project licence file
-├── README.md # This documentation file
-└── .env # (Gitignored - if using this method) API keys
+├── cache/                                          # (Gitignored) Stores cached parsed PDF elements (*.pkl)
+├── faiss_index_cache/                              # (Gitignored) Stores persisted FAISS index files
+├── uploaded_pdfs/                                  # (Gitignored) Temporary storage for uploaded PDFs
+├── .gitignore                                      # Specifies intentionally untracked files by Git
+├── app.py                                          # The main Streamlit application script
+├── environment.yml                                 # Conda environment definition with dependencies
+├── LICENSE                                         # Project licence file
+├── README.md                                       # This documentation file
+└── .env                                            # (Gitignored - if you choose this method) API keys
 
 
 ## Caching Behaviour
