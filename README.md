@@ -146,7 +146,9 @@ Follow these steps to set up the project locally:
 ## Project Structure <!-- MODIFIED -->
 
 The project follows a modular structure:
+
 Junior_ML_Engineer/
+
 ├── assets/ # Image assets for the UI
 │ ├── logo_temelion.png
 │ ├── ai_building_hand.png
