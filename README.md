@@ -48,10 +48,13 @@ A Retrieval-Augmented Generation (RAG) application that allows users to upload P
     *   Anthropic (Claude LLM)
 *   **Vector Store:** FAISS (`faiss-cpu` or `faiss-gpu`)
 *   **PDF Parsing:**
-    *   PyMuPDF (`pymupdf`)
-    *   Camelot (`camelot-py[cv]`) - *Requires Ghostscript*
-    *   Pytesseract - *Requires Tesseract OCR engine*
-    *   Pillow (PIL)
+    *   PyMuPDF (`pymupdf`): *Core PDF text/image extraction*. 
+    *   Camelot (`camelot-py[cv]`) - *Table extraction*
+    *   Pytesseract - *Python wrapper for Tesseract-OCR Engine. * - *Requires Tesseract OCR engine*
+    *   Pillow (PIL) - *Image handling.*
+    *   **Poppler:** - *PDF rendering utilities (required by `pdf2image` used indirectly for OCR page conversion).*
+    *   **Tesseract OCR Engine:** - *External tool for Optical Character Recognition on images.*
+    *   **Ghostscript:** - *External tool often required by Camelot for PDF processing.*
 *   **Data Handling:** Pandas
 *   **GPU Check:** PyTorch (`torch`)
 
@@ -59,13 +62,59 @@ A Retrieval-Augmented Generation (RAG) application that allows users to upload P
 
 Before you begin, ensure you have the following installed on your system:
 
-1.  **Miniconda or Anaconda:** Required for managing the Python environment and dependencies. [Miniconda Installation Guide](https://docs.conda.io/projects/miniconda/en/latest/)
-2.  **Git:** For cloning the repository. [Git Website](https://git-scm.com/)
-3.  **Tesseract OCR Engine:** Essential for extracting text from images within PDFs.
-    *   Installation instructions vary by OS: [Tesseract Installation Guide](https://tesseract-ocr.github.io/tessdoc/Installation.html)
-    *   **Important:** Ensure Tesseract is added to your system's PATH environment variable so the script can find it.
-    *   Install necessary language packs (e.g., `eng` for English, `fra` for French) during or after installation. The script uses `lang='fra+eng'`.
-4.  **Ghostscript (Highly Recommended):** Camelot often relies on Ghostscript for table extraction, especially from certain PDF types. Install it to avoid potential errors. [Ghostscript Downloads](https://www.ghostscript.com/releases/gsdnld.html)
+1.  **Miniconda or Anaconda:** Required for managing the Python environment and dependencies.
+    *   [Miniconda Installation Guide](https://docs.conda.io/projects/miniconda/en/latest/)
+
+2.  **Git:** For cloning the repository.
+    *   [Git Website](https://git-scm.com/)
+
+3.  **Poppler:** Required by libraries like `pdf2image` to interact with PDF files (e.g., convert pages to images for OCR).
+    *   **Windows:**
+        *   Download the latest Windows binaries from [Poppler for Windows Releases](https://github.com/oschwartz10612/poppler-windows/releases/). (e.g., `Release-24.07.0-0`).
+        *   Extract the archive to a permanent location (e.g., `C:\Program Files\poppler-24.07.0`).
+        *   **Important:** Add the `bin\` subdirectory from the extracted archive (e.g., `C:\Program Files\poppler-24.07.0\Library\bin`) to your system's **PATH environment variable**. Restart your terminal/IDE after changing the PATH.
+    *   **macOS (using Homebrew):**
+        ```bash
+        brew install poppler
+        ```
+        *(Homebrew usually handles the PATH configuration.)*
+    *   **Linux (Debian/Ubuntu):**
+        ```bash
+        sudo apt update && sudo apt install poppler-utils
+        ```
+        *(The package manager usually handles the PATH configuration.)*
+    *   **Linux (Fedora/CentOS):**
+        ```bash
+        sudo dnf install poppler-utils
+        ```
+        *(The package manager usually handles the PATH configuration.)*
+
+4.  **Tesseract OCR Engine:** Essential for extracting text from images within PDFs.
+    *   **Windows:**
+        *   Download an installer, e.g., from the [Tesseract at UB Mannheim project](https://github.com/UB-Mannheim/tesseract/wiki) or using `winget install --id UB-Mannheim.TesseractOCR`.
+        *   During installation, ensure you select the necessary language packs (at least **English** and **French** for this project: `eng`, `fra`).
+        *   **Important:** Add the Tesseract installation directory (e.g., `C:\Program Files\Tesseract-OCR`) to your system's **PATH environment variable**. Restart your terminal/IDE after changing the PATH.
+    *   **macOS (using Homebrew):**
+        ```bash
+        brew install tesseract tesseract-lang
+        ```
+        *(This installs the engine and common language packs. Homebrew usually handles the PATH.)*
+    *   **Linux (Debian/Ubuntu):**
+        ```bash
+        sudo apt update && sudo apt install tesseract-ocr tesseract-ocr-eng tesseract-ocr-fra
+        ```
+        *(Installs the engine and specific language packs. PATH is usually handled.)*
+    *   **Linux (Fedora/CentOS):**
+        ```bash
+        sudo dnf install tesseract tesseract-langpack-eng tesseract-langpack-fra
+        ```
+        *(Installs the engine and specific language packs. PATH is usually handled.)*
+    *   *Verify Installation:* You can try running `tesseract --version` and `tesseract --list-langs` in your terminal to check the installation and available languages.
+
+5.  **Ghostscript (Highly Recommended):** Camelot often relies on Ghostscript for table extraction, especially from certain PDF types. Install it to avoid potential errors.
+    *   [Ghostscript Downloads](https://www.ghostscript.com/releases/gsdnld.html)
+    *   Alternatively, use your package manager (e.g., `brew install ghostscript`, `sudo apt install ghostscript`).
+
 
 ## Installation
 
@@ -186,11 +235,17 @@ The **"🔄 Nettoyer les caches"** button in the sidebar allows you to manually 
 
 ## Troubleshooting
 
-*   **TesseractNotFoundError:** Ensure Tesseract OCR is correctly installed AND its installation directory (containing the `tesseract` executable) is included in your system's PATH environment variable.
-*   **Ghostscript Errors / Camelot Failures:** Table extraction might fail if Ghostscript is missing or not found. Ensure it is installed and accessible. Check Camelot documentation for specific dependency issues.
-*   **API Key Errors:** Double-check that you have correctly set the `VOYAGE_API_KEY` and `ANTHROPIC_API_KEY` environment variables and that they are accessible to the running script (`main.py` which imports `config.py`). Restart your terminal or IDE after setting persistent variables. <!-- MODIFIED -->
+## Troubleshooting
+
+*   **Poppler Errors (`pdf2image`, etc.):** <!-- NEW -->
+    *   *Windows:* Ensure you have downloaded Poppler, extracted it, and **added the `bin` subdirectory to your system PATH environment variable**. Verify the path is correct and restart your terminal/IDE.
+    *   *macOS/Linux:* Ensure Poppler is correctly installed via your package manager (`brew install poppler`, `apt install poppler-utils`, `dnf install poppler-utils`). Check if `pdftoppm` command works in your terminal.
+*   **TesseractNotFoundError:** Ensure Tesseract OCR is correctly installed AND its installation directory (containing the `tesseract` executable) is included in your system's **PATH environment variable** (especially on Windows). Verify installed languages (`tesseract --list-langs`).
+*   **Ghostscript Errors / Camelot Failures:** Table extraction might fail if Ghostscript is missing or not found. Ensure it is installed (`brew install ghostscript`, `apt install ghostscript`, etc.) and accessible in the system's PATH if needed. Check Camelot documentation for specific dependency issues.
+*   **API Key Errors:** Double-check that you have correctly set the `VOYAGE_API_KEY` and `ANTHROPIC_API_KEY` environment variables and that they are accessible to the running script (`main.py` which imports `config.py`). Restart your terminal or IDE after setting persistent variables.
 *   **FAISS Errors:** Ensure you have the correct FAISS package installed (`faiss-cpu` or `faiss-gpu`) as listed in `environment.yml`. GPU usage requires compatible Nvidia drivers and CUDA toolkit installed, although the script falls back to CPU if GPU fails.
-*   **Import Errors:** If you get errors like `ModuleNotFoundError`, ensure your Conda environment (`temelion-rag-env`) is activated and that all dependencies from `environment.yml` were installed correctly. Also, check that you are running `streamlit run main.py` from the root directory (`Junior_ML_Engineer/`). <!-- NEW SECTION -->
+*   **Import Errors:** If you get errors like `ModuleNotFoundError`, ensure your Conda environment (`temelion-rag-env`) is activated and that all dependencies from `environment.yml` were installed correctly. Also, check that you are running `streamlit run main.py` from the root directory (`Junior_ML_Engineer/`).
+
 
 ## Licence
 
