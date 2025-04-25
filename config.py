@@ -1,5 +1,5 @@
 """
-Configuration Module for Temelion RAG Demo
+Configuration Module for Technical Document RAG Demo
 ==========================================
 
 This module centralises all configuration settings for the RAG application,
@@ -38,7 +38,7 @@ CACHE_DIR = Path("./cache")
 FAISS_INDEX_DIR = Path("./faiss_index_cache")
 
 # --- Image Paths ---
-MAIN_LOGO_PATH = Path("./assets/logo_temelion.png")
+MAIN_LOGO_PATH = Path("./assets/tech-icon.png.png")
 SIDEBAR_ICON_PATH = Path("./assets/ai_building_hand.png")
 MAIN_PATH = Path("./assets/ai_building_large.png")
 

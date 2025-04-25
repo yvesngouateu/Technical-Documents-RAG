@@ -1,5 +1,5 @@
 """
-User Interface Module for Temelion RAG Demo
+User Interface Module for Technical Document RAG Demo
 =========================================
 
 This module contains UI components and layouts for the Streamlit application.
@@ -34,7 +34,7 @@ def setup_page_config():
     """
     Configures the Streamlit page settings.
     """
-    st.set_page_config(page_title="Temelion RAG Demo", layout="wide")
+    st.set_page_config(page_title="Technical Document RAG Demo", layout="wide")
 
 def render_header():
     """
@@ -48,9 +48,9 @@ def render_header():
                 st.image(str(MAIN_LOGO_PATH), width=120)
             else:
                 # Default image if logo not found
-                st.image("https://media.licdn.com/dms/image/D4E0BAQG1IeBpFIIh_g/company-logo_200_200/0/1710409416064/temelion_logo?e=1721260800&v=beta&t=B0cQ57B6T081KZMwvo0BvCj9BGlbM4S7UydO9gCxu98", width=100)
+                st.image("https://img.freepik.com/vecteurs-libre/ingenieur-plat-organique-travaillant-construction_52683-59203.jpg", width=100)
         with title_col2:
-            st.title("Temelion: A Technical-Document-RAG Demo")
+            st.title("A Technical-Document-RAG Demo")
 
 def render_metrics(performance_metrics: Dict[str, Any]):
     """
@@ -84,7 +84,7 @@ def setup_sidebar():
         st.sidebar.image(str(SIDEBAR_ICON_PATH), width=200)
     else:
         # Default image if icon not found
-        st.sidebar.image(MAIN_LOGO_PATH if MAIN_LOGO_PATH.exists() else "https://media.licdn.com/dms/image/D4E0BAQG1IeBpFIIh_g/company-logo_200_200/0/1710409416064/temelion_logo?e=1721260800&v=beta&t=B0cQ57B6T081KZMwvo0BvCj9BGlbM4S7UydO9gCxu98", width=100)
+        st.sidebar.image(MAIN_LOGO_PATH if MAIN_LOGO_PATH.exists() else "https://img.freepik.com/vecteurs-libre/ingenieur-plat-organique-travaillant-construction_52683-59203.jpg", width=100)
 
     # File upload with validation
     uploaded_file = st.sidebar.file_uploader("Votre PDF ICI", type="pdf", key="pdf_uploader")
@@ -150,7 +150,7 @@ def display_welcome_screen():
         else:
             st.image("https://img.freepik.com/free-vector/file-searching-concept-illustration_114360-4690.jpg", width=300)
     with col2:
-        st.subheader("Welcome to the Temelion RAG Demo!")
+        st.subheader("Welcome to the Technical Document RAG Demo!")
         st.write("""
         1. Pour commencer, sur le `Panneau de Contrôle` uploadez un document technique de votre choix au format PDF.
                  

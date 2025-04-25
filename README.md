@@ -4,6 +4,11 @@
 
 A Retrieval-Augmented Generation (RAG) application that allows users to upload PDF documents and interactively ask questions about their content. The system leverages Llama Index for the RAG pipeline, VoyageAI for high-performance embeddings and reranking, Anthropic's Claude model for generation, FAISS for efficient vector storage, and Streamlit for the user interface.
 
+![alt text](image.png)
+
+
+
+![alt text](image-1.png)
 ![image](https://github.com/user-attachments/assets/033a748e-f5d5-4ee2-ad44-9e8bec8a6dd4)
 
 ![image](https://github.com/user-attachments/assets/1f6c89e5-b613-44a6-bfed-6c3302f65a82)
@@ -30,7 +35,7 @@ A Retrieval-Augmented Generation (RAG) application that allows users to upload P
     *   Performance metrics (parsing time, indexing time, etc.).
 *   **Efficient Caching:** Caches parsed document elements and FAISS indices locally to significantly speed up processing for previously uploaded documents.
 *   **Secure Configuration:** API keys are loaded from environment variables (via `config.py`), avoiding hardcoding sensitive information.
-*   **Modular Codebase:** Application logic is split into dedicated modules for better organisation and maintainability. <!-- MODIFIED -->
+*   **Modular Codebase:** Application logic is split into dedicated modules for better organisation and maintainability. 
 
 ## Technologies Used
 
@@ -48,6 +53,13 @@ A Retrieval-Augmented Generation (RAG) application that allows users to upload P
     *   Anthropic (Claude LLM)
 *   **Vector Store:** FAISS (`faiss-cpu` or `faiss-gpu`)
 *   **PDF Parsing:**
+    *   PyMuPDF (`pymupdf`): *Core PDF text/image extraction*. 
+    *   Camelot (`camelot-py[cv]`) - *Table extraction*
+    *   Pytesseract - *Python wrapper for Tesseract-OCR Engine. * - *Requires Tesseract OCR engine*
+    *   Pillow (PIL) - *Image handling.*
+    *   **Poppler:** - *PDF rendering utilities (required by `pdf2image` used indirectly for OCR page conversion).*
+    *   **Tesseract OCR Engine:** - *External tool for Optical Character Recognition on images.*
+    *   **Ghostscript:** - *External tool often required by Camelot for PDF processing.*
     *   PyMuPDF (`pymupdf`): *Core PDF text/image extraction*. 
     *   Camelot (`camelot-py[cv]`) - *Table extraction*
     *   Pytesseract - *Python wrapper for Tesseract-OCR Engine. * - *Requires Tesseract OCR engine*
@@ -114,6 +126,58 @@ Before you begin, ensure you have the following installed on your system:
 5.  **Ghostscript (Highly Recommended):** Camelot often relies on Ghostscript for table extraction, especially from certain PDF types. Install it to avoid potential errors.
     *   [Ghostscript Downloads](https://www.ghostscript.com/releases/gsdnld.html)
     *   Alternatively, use your package manager (e.g., `brew install ghostscript`, `sudo apt install ghostscript`).
+1.  **Miniconda or Anaconda:** Required for managing the Python environment and dependencies.
+    *   [Miniconda Installation Guide](https://docs.conda.io/projects/miniconda/en/latest/)
+
+2.  **Git:** For cloning the repository.
+    *   [Git Website](https://git-scm.com/)
+
+3.  **Poppler:** Required by libraries like `pdf2image` to interact with PDF files (e.g., convert pages to images for OCR).
+    *   **Windows:**
+        *   Download the latest Windows binaries from [Poppler for Windows Releases](https://github.com/oschwartz10612/poppler-windows/releases/). (e.g., `Release-24.07.0-0`).
+        *   Extract the archive to a permanent location (e.g., `C:\Program Files\poppler-24.07.0`).
+        *   **Important:** Add the `bin\` subdirectory from the extracted archive (e.g., `C:\Program Files\poppler-24.07.0\Library\bin`) to your system's **PATH environment variable**. Restart your terminal/IDE after changing the PATH.
+    *   **macOS (using Homebrew):**
+        ```bash
+        brew install poppler
+        ```
+        *(Homebrew usually handles the PATH configuration.)*
+    *   **Linux (Debian/Ubuntu):**
+        ```bash
+        sudo apt update && sudo apt install poppler-utils
+        ```
+        *(The package manager usually handles the PATH configuration.)*
+    *   **Linux (Fedora/CentOS):**
+        ```bash
+        sudo dnf install poppler-utils
+        ```
+        *(The package manager usually handles the PATH configuration.)*
+
+4.  **Tesseract OCR Engine:** Essential for extracting text from images within PDFs.
+    *   **Windows:**
+        *   Download an installer, e.g., from the [Tesseract at UB Mannheim project](https://github.com/UB-Mannheim/tesseract/wiki) or using `winget install --id UB-Mannheim.TesseractOCR`.
+        *   During installation, ensure you select the necessary language packs (at least **English** and **French** for this project: `eng`, `fra`).
+        *   **Important:** Add the Tesseract installation directory (e.g., `C:\Program Files\Tesseract-OCR`) to your system's **PATH environment variable**. Restart your terminal/IDE after changing the PATH.
+    *   **macOS (using Homebrew):**
+        ```bash
+        brew install tesseract tesseract-lang
+        ```
+        *(This installs the engine and common language packs. Homebrew usually handles the PATH.)*
+    *   **Linux (Debian/Ubuntu):**
+        ```bash
+        sudo apt update && sudo apt install tesseract-ocr tesseract-ocr-eng tesseract-ocr-fra
+        ```
+        *(Installs the engine and specific language packs. PATH is usually handled.)*
+    *   **Linux (Fedora/CentOS):**
+        ```bash
+        sudo dnf install tesseract tesseract-langpack-eng tesseract-langpack-fra
+        ```
+        *(Installs the engine and specific language packs. PATH is usually handled.)*
+    *   *Verify Installation:* You can try running `tesseract --version` and `tesseract --list-langs` in your terminal to check the installation and available languages.
+
+5.  **Ghostscript (Highly Recommended):** Camelot often relies on Ghostscript for table extraction, especially from certain PDF types. Install it to avoid potential errors.
+    *   [Ghostscript Downloads](https://www.ghostscript.com/releases/gsdnld.html)
+    *   Alternatively, use your package manager (e.g., `brew install ghostscript`, `sudo apt install ghostscript`).
 
 
 ## Installation
@@ -122,8 +186,8 @@ Follow these steps to set up the project locally:
 
 1.  **Clone the Repository:**
     ```bash
-    git clone https://github.com/yvesngouateu/Junior_ML_Engineer.git # Or your repository URL
-    cd Junior_ML_Engineer
+    git clone https://github.com/yvesngouateu/Technical-Documents-RAG.git # Or your repository URL
+    cd Technical-Documents-RAG
     ```
 
 2.  **Create and Activate the Conda Environment:**
@@ -134,7 +198,7 @@ Follow these steps to set up the project locally:
     ```
 
 3.  **Configure API Keys (CRITICAL & SECURELY):**
-    This application requires API keys for Voyage AI and Anthropic. **Do NOT hardcode these keys.** The script (`config.py`) reads them from environment variables. You must set these variables in your system: <!-- MODIFIED -->
+    This application requires API keys for Voyage AI and Anthropic. **Do NOT hardcode these keys.** The script (`config.py`) reads them from environment variables. You must set these variables in your system: 
 
     *   `VOYAGE_API_KEY`: Your API key from Voyage AI.
     *   `ANTHROPIC_API_KEY`: Your API key from Anthropic.
@@ -167,7 +231,7 @@ Follow these steps to set up the project locally:
     conda activate temelion-rag-env # Or your environment name
     ```
 
-2.  **Run the Streamlit Application:** <!-- MODIFIED -->
+2.  **Run the Streamlit Application:** 
     The application entry point is now `main.py`.
     ```bash
     streamlit run main.py
@@ -190,19 +254,19 @@ Follow these steps to set up the project locally:
 
 ## Configuration
 
-*   **API Keys:** Must be configured via environment variables (`VOYAGE_API_KEY`, `ANTHROPIC_API_KEY`) and are loaded in `config.py`. <!-- MODIFIED -->
-*   **Models & Parameters:** Settings like model names, embedding dimensions, parsing thresholds, etc., are centralised in `config.py`. <!-- MODIFIED -->
-*   **Retrieval Parameters:** `K` (similarity_top_k) and `N` (rerank_top_n) can be adjusted dynamically via sliders in the Streamlit UI sidebar (defined in `ui.py`). <!-- MODIFIED -->
+*   **API Keys:** Must be configured via environment variables (`VOYAGE_API_KEY`, `ANTHROPIC_API_KEY`) and are loaded in `config.py`. 
+*   **Models & Parameters:** Settings like model names, embedding dimensions, parsing thresholds, etc., are centralised in `config.py`. 
+*   **Retrieval Parameters:** `K` (similarity_top_k) and `N` (rerank_top_n) can be adjusted dynamically via sliders in the Streamlit UI sidebar (defined in `ui.py`). 
 *   **File Paths:** Directories for uploads (`uploaded_pdfs/`), parsing cache (`cache/`), and FAISS index cache (`faiss_index_cache/`) are defined in `config.py` and created automatically if they don't exist. These directories are gitignored.
 
-## Project Structure <!-- MODIFIED -->
+## Project Structure 
 
 The project follows a modular structure:
 
 ```text
-Junior_ML_Engineer/
+Technical-Documents-RAG/
 ├── assets/                  # UI images (logos, icons)
-│   ├── logo_temelion.png
+│   ├── tech-icon.png.png
 │   ├── ai_building_hand.png
 │   └── ai_building_large.png
 ├── cache/                   # (Gitignored) Cached parsed PDF data (*.pkl)
@@ -217,35 +281,27 @@ Junior_ML_Engineer/
 ├── ui.py                    # Streamlit UI components and layout functions
 ├── main.py                  # Main application entry point, orchestrates modules and state
 │
-├── .gitignore               # Specifies intentionally untracked files by Git
-├── environment.yml          # Conda environment definition with dependencies
-├── LICENSE                  # Project licence file (Consider adding one!)
-├── README.md                # This documentation file
-└── .env                     # (Gitignored - if using this method) API keys
-```
+├── .gitignore                             # Specifies intentionally untracked files by Git
+├── environment.yml                   # Conda environment definition with dependencies
+├── LICENSE                                   # Project licence file (Consider adding one!) (Consider adding one!)
+├── README.md                               # This documentation file
+└── .env                                         # (Gitignored - if using this method) API keys
+``````
 
-## Caching Behaviour
+To improve performance, the application implements caching:
 
-To improve performance, the application implements caching using functions in `cache_utils.py`: <!-- MODIFIED -->
+*   **Parsed Elements:** When a PDF is successfully parsed, its extracted elements (text blocks, tables, OCR results) are saved as a `.pkl` file in the `cache/` directory. If the same PDF is uploaded again, these cached elements are loaded instead of re-parsing.
+*   **FAISS Index:** After generating embeddings and building the FAISS index for a document, the index is persisted to a subdirectory within `faiss_index_cache/`. If the same document is processed again, the pre-built index is loaded, skipping the potentially time-consuming embedding generation step.
 
-*   **Parsed Elements:** When a PDF is successfully parsed (`pdf_parser.py`), its extracted elements are saved as a `.pkl` file in the `cache/` directory (path generated by `cache_utils.get_cache_path`). If the same PDF is uploaded again, these cached elements are loaded (`cache_utils.load_parsed_elements`) instead of re-parsing.
-*   **FAISS Index:** After generating embeddings and building the FAISS index (`indexing.py`), the index is persisted to a subdirectory within `faiss_index_cache/`. If the same document is processed again, the pre-built index is loaded (`indexing.load_faiss_index`), skipping the potentially time-consuming embedding generation step.
-
-The **"🔄 Nettoyer les caches"** button in the sidebar allows you to manually bypass and delete the cache and index for the currently loaded document.
+The **"Force Re-Parse & Re-Index"** button in the sidebar allows you to manually bypass and delete the cache and index for the currently loaded document.
 
 ## Troubleshooting
 
-## Troubleshooting
-
-*   **Poppler Errors (`pdf2image`, etc.):** <!-- NEW -->
-    *   *Windows:* Ensure you have downloaded Poppler, extracted it, and **added the `bin` subdirectory to your system PATH environment variable**. Verify the path is correct and restart your terminal/IDE.
-    *   *macOS/Linux:* Ensure Poppler is correctly installed via your package manager (`brew install poppler`, `apt install poppler-utils`, `dnf install poppler-utils`). Check if `pdftoppm` command works in your terminal.
-*   **TesseractNotFoundError:** Ensure Tesseract OCR is correctly installed AND its installation directory (containing the `tesseract` executable) is included in your system's **PATH environment variable** (especially on Windows). Verify installed languages (`tesseract --list-langs`).
-*   **Ghostscript Errors / Camelot Failures:** Table extraction might fail if Ghostscript is missing or not found. Ensure it is installed (`brew install ghostscript`, `apt install ghostscript`, etc.) and accessible in the system's PATH if needed. Check Camelot documentation for specific dependency issues.
-*   **API Key Errors:** Double-check that you have correctly set the `VOYAGE_API_KEY` and `ANTHROPIC_API_KEY` environment variables and that they are accessible to the running script (`main.py` which imports `config.py`). Restart your terminal or IDE after setting persistent variables.
+*   **TesseractNotFoundError:** Ensure Tesseract OCR is correctly installed AND its installation directory (containing the `tesseract` executable) is included in your system's PATH environment variable.
+*   **Ghostscript Errors / Camelot Failures:** Table extraction might fail if Ghostscript is missing or not found. Ensure it is installed and accessible. Check Camelot documentation for specific dependency issues.
+*   **API Key Errors:** Double-check that you have correctly set the `VOYAGE_API_KEY` and `ANTHROPIC_API_KEY` environment variables and that they are accessible to the running script (`main.py` which imports `config.py`). Restart your terminal or IDE after setting persistent variables. <!-- MODIFIED -->
 *   **FAISS Errors:** Ensure you have the correct FAISS package installed (`faiss-cpu` or `faiss-gpu`) as listed in `environment.yml`. GPU usage requires compatible Nvidia drivers and CUDA toolkit installed, although the script falls back to CPU if GPU fails.
-*   **Import Errors:** If you get errors like `ModuleNotFoundError`, ensure your Conda environment (`temelion-rag-env`) is activated and that all dependencies from `environment.yml` were installed correctly. Also, check that you are running `streamlit run main.py` from the root directory (`Junior_ML_Engineer/`).
-
+*   **Import Errors:** If you get errors like `ModuleNotFoundError`, ensure your Conda environment (`temelion-rag-env`) is activated and that all dependencies from `environment.yml` were installed correctly. Also, check that you are running `streamlit run main.py` from the root directory (`Technical-Documents-RAG`). <!-- NEW SECTION -->
 
 ## Licence
 

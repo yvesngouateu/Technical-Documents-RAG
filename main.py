@@ -1,8 +1,8 @@
 """
-Main Application Module for Temelion RAG Demo
+Main Application Module for Technical Document RAG Demo
 ===========================================
 
-This is the entry point for the Temelion RAG Demo application.
+This is the entry point for the Technical Document RAG Demo application.
 It orchestrates all other modules and manages the application flow and state.
 
 Key responsibilities:

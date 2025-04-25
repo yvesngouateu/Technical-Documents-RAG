@@ -1,5 +1,5 @@
 """
-Query Engine Module for Temelion RAG Demo
+Query Engine Module for Technical Document RAG Demo
 ========================================
 
 This module configures the query engine used for answering user questions

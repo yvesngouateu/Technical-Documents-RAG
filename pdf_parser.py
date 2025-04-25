@@ -1,5 +1,5 @@
 """
-PDF Parsing Module for Temelion RAG Demo
+PDF Parsing Module for Technical Document RAG Demo
 ========================================
 
 This module provides functionality for parsing PDF documents using a hybrid approach:
