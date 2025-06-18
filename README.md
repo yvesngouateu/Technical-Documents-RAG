@@ -4,14 +4,12 @@
 
 A Retrieval-Augmented Generation (RAG) application that allows users to upload PDF documents and interactively ask questions about their content. The system leverages Llama Index for the RAG pipeline, VoyageAI for high-performance embeddings and reranking, Anthropic's Claude model for generation, FAISS for efficient vector storage, and Streamlit for the user interface.
 
-![alt text](image.png)
+
+<img width="1277" alt="Technical-Documents-RAG-1" src="https://github.com/user-attachments/assets/9aa52a8d-c9ac-4b8b-9bc9-89a1bdbdb981" />
 
 
+<img width="1277" alt="Technical-Documents-RAG-2" src="https://github.com/user-attachments/assets/fe92da21-6c63-4756-b9c4-55425a98f4ec" />
 
-![alt text](image-1.png)
-![image](https://github.com/user-attachments/assets/033a748e-f5d5-4ee2-ad44-9e8bec8a6dd4)
-
-![image](https://github.com/user-attachments/assets/1f6c89e5-b613-44a6-bfed-6c3302f65a82)
 
 
 
