@@ -1,0 +1,23 @@
+Docs: Update README for modular structure
+
+Reflect new file organisation (main.py entry point, config.py, ui.py etc.) in Project Structure and Usage sections.
+
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+#
+# interactive rebase in progress; onto 8d5c7c8
+# Last command done (1 command done):
+#    pick db97b51 Docs: Update README for modular structure
+# No commands remaining.
+# You are currently rebasing branch 'master' on '8d5c7c8'.
+#
+# Changes to be committed:
+#	modified:   README.md
+#	deleted:    assets/logo_temelion.png
+#	new file:   assets/tech-icon.png
+#	modified:   config.py
+#	modified:   main.py
+#	modified:   pdf_parser.py
+#	modified:   query_engine.py
+#	modified:   ui.py
+#

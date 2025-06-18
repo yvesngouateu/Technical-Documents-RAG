@@ -1,5 +1,5 @@
 """
-Indexing Module for Temelion RAG Demo
+Indexing Module for Technical Document RAG Demo
 ====================================
 
 This module handles the conversion of parsed PDF elements into vector embeddings

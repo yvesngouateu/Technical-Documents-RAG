@@ -1,5 +1,5 @@
 """
-Cache Utilities Module for Temelion RAG Demo
+Cache Utilities Module for Technical Document RAG Demo
 ===========================================
 
 This module provides functions for saving and loading parsed document data,
