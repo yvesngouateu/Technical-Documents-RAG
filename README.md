@@ -124,58 +124,6 @@ Before you begin, ensure you have the following installed on your system:
 5.  **Ghostscript (Highly Recommended):** Camelot often relies on Ghostscript for table extraction, especially from certain PDF types. Install it to avoid potential errors.
     *   [Ghostscript Downloads](https://www.ghostscript.com/releases/gsdnld.html)
     *   Alternatively, use your package manager (e.g., `brew install ghostscript`, `sudo apt install ghostscript`).
-1.  **Miniconda or Anaconda:** Required for managing the Python environment and dependencies.
-    *   [Miniconda Installation Guide](https://docs.conda.io/projects/miniconda/en/latest/)
-
-2.  **Git:** For cloning the repository.
-    *   [Git Website](https://git-scm.com/)
-
-3.  **Poppler:** Required by libraries like `pdf2image` to interact with PDF files (e.g., convert pages to images for OCR).
-    *   **Windows:**
-        *   Download the latest Windows binaries from [Poppler for Windows Releases](https://github.com/oschwartz10612/poppler-windows/releases/). (e.g., `Release-24.07.0-0`).
-        *   Extract the archive to a permanent location (e.g., `C:\Program Files\poppler-24.07.0`).
-        *   **Important:** Add the `bin\` subdirectory from the extracted archive (e.g., `C:\Program Files\poppler-24.07.0\Library\bin`) to your system's **PATH environment variable**. Restart your terminal/IDE after changing the PATH.
-    *   **macOS (using Homebrew):**
-        ```bash
-        brew install poppler
-        ```
-        *(Homebrew usually handles the PATH configuration.)*
-    *   **Linux (Debian/Ubuntu):**
-        ```bash
-        sudo apt update && sudo apt install poppler-utils
-        ```
-        *(The package manager usually handles the PATH configuration.)*
-    *   **Linux (Fedora/CentOS):**
-        ```bash
-        sudo dnf install poppler-utils
-        ```
-        *(The package manager usually handles the PATH configuration.)*
-
-4.  **Tesseract OCR Engine:** Essential for extracting text from images within PDFs.
-    *   **Windows:**
-        *   Download an installer, e.g., from the [Tesseract at UB Mannheim project](https://github.com/UB-Mannheim/tesseract/wiki) or using `winget install --id UB-Mannheim.TesseractOCR`.
-        *   During installation, ensure you select the necessary language packs (at least **English** and **French** for this project: `eng`, `fra`).
-        *   **Important:** Add the Tesseract installation directory (e.g., `C:\Program Files\Tesseract-OCR`) to your system's **PATH environment variable**. Restart your terminal/IDE after changing the PATH.
-    *   **macOS (using Homebrew):**
-        ```bash
-        brew install tesseract tesseract-lang
-        ```
-        *(This installs the engine and common language packs. Homebrew usually handles the PATH.)*
-    *   **Linux (Debian/Ubuntu):**
-        ```bash
-        sudo apt update && sudo apt install tesseract-ocr tesseract-ocr-eng tesseract-ocr-fra
-        ```
-        *(Installs the engine and specific language packs. PATH is usually handled.)*
-    *   **Linux (Fedora/CentOS):**
-        ```bash
-        sudo dnf install tesseract tesseract-langpack-eng tesseract-langpack-fra
-        ```
-        *(Installs the engine and specific language packs. PATH is usually handled.)*
-    *   *Verify Installation:* You can try running `tesseract --version` and `tesseract --list-langs` in your terminal to check the installation and available languages.
-
-5.  **Ghostscript (Highly Recommended):** Camelot often relies on Ghostscript for table extraction, especially from certain PDF types. Install it to avoid potential errors.
-    *   [Ghostscript Downloads](https://www.ghostscript.com/releases/gsdnld.html)
-    *   Alternatively, use your package manager (e.g., `brew install ghostscript`, `sudo apt install ghostscript`).
 
 
 ## Installation
