@@ -140,7 +140,6 @@ Follow these steps to set up the project locally:
     This command uses the provided `environment.yml` file to install all necessary Python packages with the correct versions.
     ```bash
     conda env create -f environment.yml
-    conda activate temelion-rag-env # Check the 'name:' field in environment.yml for the exact environment name
     ```
 
 3.  **Configure API Keys (CRITICAL & SECURELY):**
@@ -174,7 +173,7 @@ Follow these steps to set up the project locally:
 
 1.  **Activate the Conda Environment:**
     ```bash
-    conda activate temelion-rag-env # Or your environment name
+    conda activate tech_doc_rag # Check the 'name:' field in environment.yml for the exact environment name
     ```
 
 2.  **Run the Streamlit Application:** 
